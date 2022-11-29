@@ -1,0 +1,93 @@
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Tokenized Ballot App</h1>
+  <div class="col-lg-6 mx-auto">
+    <div *ngIf="!wallet" class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <button (click)="createWallet()" type="button" class="btn btn-success btn-lg px-4 gap-3">
+        Create Wallet
+      </button>
+      <button disabled type="button" class="btn btn-info btn-lg px-4 gap-3">
+        Import Wallet
+      </button>
+      <button disabled type="button" class="btn btn-danger btn-lg px-4 gap-3">
+        Connect Wallet
+      </button>
+    </div>
+    <button (click)="updateValues()" type="button" class="btn btn-success btn-lg px-4 gap-3 my-4">
+      Refresh
+    </button>
+    <p *ngIf="tokenAddress"> The token address is: {{tokenAddress}} </p>
+    <p *ngIf="wallet"> Your wallet address is: {{wallet.address}}</p>
+    <div *ngIf="wallet&&!ballotContract">
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-4">
+        <div class="card">
+          <div class="card-body">
+            Your ETH balance is: {{ethBalance}}
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            Your token balance is: {{tokenBalance}}
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            Your voting power is: {{votePower}}
+          </div>
+        </div>
+      </div>
+      <select #inputRequestAmount type="text" class="form-select my-4" aria-label="Choose the amount of tokens to request here">
+        <option selected value="1">1</option>
+        <option value="10">10</option>
+        <option value="100">100</option>
+      </select>
+      <button (click)="requestTokens(inputRequestAmount.value)" type="button" class="btn btn-success btn-lg px-4 gap-3">
+        Request tokens
+      </button>
+      <input #inputDelegateAddress type="text" class="form-control my-4" placeholder="Paste an address to delegate votes to here (self-delegation required)">
+      <button (click)="delegate(inputDelegateAddress.value)" type="button" class="btn btn-success btn-lg px-4 gap-3">
+        Delegate
+      </button>
+      <div>
+        <input #inputBallotAddress type="text" class="form-control my-4" placeholder="Paste your ballot address here">
+        <button (click)="connectBallot(inputBallotAddress.value)" type="button" class="btn btn-success btn-lg px-4 gap-3">
+          Connect Ballot
+        </button>
+      </div>
+    </div>
+    <div *ngIf="ballotContract">
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-4">
+        <div class="card">
+          <div class="card-body">
+            Your voting power on this ballot: {{ballotVotePower}}
+          </div>
+        </div>
+      </div>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-4">
+        <div class="card">
+          <div class="card-body">
+            {{getProposal(0).name}}: {{getProposal(0).voteCount}}
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            {{getProposal(1).name}}: {{getProposal(1).voteCount}}
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            {{getProposal(2).name}}: {{getProposal(2).voteCount}}
+          </div>
+        </div>
+      </div>
+      <select #inputProposal type="text" class="form-select my-4" aria-label="Choose the proposal to vote for here">
+        <option selected value="0">{{getProposal(0).name}}</option>
+        <option value="1">{{getProposal(1).name}}</option>
+        <option value="2">{{getProposal(2).name}}</option>
+      </select>
+      <input #inputVoteAmount type="text" class="form-control my-4" placeholder="Input how many votes to cast here">
+      <button (click)="vote(inputProposal.value, inputVoteAmount.value)" type="button" class="btn btn-success btn-lg px-4 gap-3">
+        Vote
+      </button>
+    </div>
+  </div>
+</div>
